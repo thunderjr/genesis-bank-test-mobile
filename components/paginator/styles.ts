@@ -10,7 +10,7 @@ export const NumberCard = styled.TouchableOpacity<{ selected: boolean }>`
 `;
 
 export const NumberCardText = styled.Text`
-  font-size: 22px;
+  font-size: 18px;
   color: white;
 `;
 

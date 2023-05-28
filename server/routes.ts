@@ -13,6 +13,8 @@ import type {
   CreateProductRequest,
   GetProductsRequest,
 } from "./types/requests";
+import { purchaseRequestSchema } from "./types/purchase";
+import { registerPurchase } from "./features/register-purchase";
 
 const routes: FastifyPluginAsync = async (
   app: FastifyInstance,
@@ -36,6 +38,20 @@ const routes: FastifyPluginAsync = async (
     const product = await createProduct(validationResult.data);
     return res.status(201).send(product);
   });
+
+  app.post(
+    "/purchase",
+    async (req: CreateProductRequest, res: FastifyReply) => {
+      const validationResult = purchaseRequestSchema.safeParse(req.body);
+
+      if (!validationResult.success) {
+        return res.status(400).send({ errors: validationResult.error.issues });
+      }
+
+      const purchase = await registerPurchase(validationResult.data);
+      return res.status(201).send(purchase);
+    }
+  );
 };
 
 export default routes;

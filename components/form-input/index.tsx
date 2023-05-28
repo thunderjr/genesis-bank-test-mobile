@@ -1,10 +1,10 @@
-import { type Control, Controller } from "react-hook-form";
-import { type TextStyle, View } from "react-native";
-
-import { STextInput } from "./styles";
+import { Controller, type Control } from "react-hook-form";
+import { View, type TextStyle } from "react-native";
 import styled from "styled-components/native";
 
-interface InputProps {
+import { STextInput } from "./styles";
+
+type Props = {
   control: Control<any, Record<string, any>>;
   name: string;
   placeholder: string;
@@ -12,29 +12,25 @@ interface InputProps {
   errors: Record<string, any> | undefined;
   multiline?: boolean;
   style?: TextStyle;
-  keyboardType?:
-    | "default"
-    | "number-pad"
-    | "decimal-pad"
-    | "numeric"
-    | "email-address"
-    | "phone-pad";
-}
+  isNumberInput?: boolean;
+  keyboardType?: "default" | "numeric";
+};
 
 const ErrorText = styled.Text`
   color: red;
 `;
 
-export const Input: React.FC<InputProps> = ({
+export const Input = ({
   control,
   name,
   placeholder,
   rules,
   errors,
   keyboardType,
+  isNumberInput = false,
   multiline = false,
   style = {},
-}) => (
+}: Props) => (
   <View>
     <Controller
       control={control}
@@ -44,7 +40,9 @@ export const Input: React.FC<InputProps> = ({
           placeholder={placeholder}
           placeholderTextColor={"#AAAAAAAA"}
           onBlur={onBlur}
-          onChangeText={onChange}
+          onChangeText={(value) =>
+            onChange(isNumberInput ? Number(value) : value)
+          }
           value={String(value)}
           keyboardType={keyboardType}
           multiline={multiline}

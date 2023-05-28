@@ -48,8 +48,11 @@ const routes: FastifyPluginAsync = async (
         return res.status(400).send({ errors: validationResult.error.issues });
       }
 
-      const purchase = await registerPurchase(validationResult.data);
-      return res.status(201).send(purchase);
+      await Promise.all(
+        validationResult.data.map((item) => registerPurchase(item))
+      );
+
+      return res.status(201).send();
     }
   );
 };

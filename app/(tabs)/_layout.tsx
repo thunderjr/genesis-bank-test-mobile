@@ -1,11 +1,17 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome5";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import type { Icon } from "@expo/vector-icons/build/createIconSet";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
 
-const TabBarIcon = (props: {
-  name: React.ComponentProps<typeof FontAwesome>["name"];
+const TabBarIcon = ({
+  Component = FontAwesome,
+  ...props
+}: {
+  name: React.ComponentProps<typeof FontAwesome & typeof FontAwesome5>["name"];
   color: string;
-}) => <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  Component?: Icon<any, any>;
+}) => <Component size={28} style={{ marginBottom: -3 }} {...props} />;
 
 const CartIcon = () => (
   <Link href="/cart" asChild>
@@ -37,7 +43,11 @@ export default function TabLayout() {
         options={{
           title: "Produtos",
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="box-open" color={color} />
+            <TabBarIcon
+              Component={FontAwesome5}
+              name="box-open"
+              color={color}
+            />
           ),
           headerRight: () => <CartIcon />,
         }}
@@ -46,7 +56,9 @@ export default function TabLayout() {
         name="new-product"
         options={{
           title: "Novo produto",
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="plus-circle" color={color} />
+          ),
         }}
       />
     </Tabs>

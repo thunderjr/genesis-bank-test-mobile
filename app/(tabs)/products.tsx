@@ -8,6 +8,13 @@ import { IProduct } from "../../validation/productSchema";
 import { Container } from "../../components/container";
 import { Paginator } from "../../components/paginator";
 import { PaginatedResult } from "../../server/types/pagination";
+import { ProductSearchBox } from "../../components/search-box";
+import { CategoryFilterButtons } from "../../components/category-filter-buttons";
+import { SButton } from "../../components/search-box/styles";
+
+export type FilterProductsReturnType = PaginatedResult<IProduct> & {
+  categories: string[];
+};
 
 const PRODUCTS_LIMIT = 4;
 
@@ -15,15 +22,23 @@ export default function ProductsPage() {
   const navigation = useNavigation();
 
   const [page, setPage] = useState<number>(1);
-  const [productsData, setProductsData] = useState<PaginatedResult<IProduct>>({
+  const [productsData, setProductsData] = useState<FilterProductsReturnType>({
     total: 0,
     items: [],
+    categories: [],
   });
 
-  const fetchData = async () => {
+  const [nameQuery, setNameQuery] = useState<string>();
+  const [categoryQuery, setCategoryQuery] = useState<string>();
+
+  const handleNameSearch = (name: string) => setNameQuery(name);
+
+  const fetchProducts = async () => {
     try {
-      const res = await apiRequester<PaginatedResult<IProduct>>(
-        `/product?page=${page}&limit=${PRODUCTS_LIMIT}`
+      const res = await apiRequester<FilterProductsReturnType>(
+        `/product?page=${page}&limit=${PRODUCTS_LIMIT}&name=${
+          nameQuery || ""
+        }&category=${categoryQuery || ""}`
       );
       setProductsData(res.data);
     } catch (error) {
@@ -36,18 +51,41 @@ export default function ProductsPage() {
     }
   };
 
+  const resetFilters = () => {
+    setPage(1);
+    setNameQuery("");
+    setCategoryQuery("");
+  };
+
   useEffect(() => {
-    fetchData();
-    const unsubscribe = navigation.addListener("focus", fetchData);
+    fetchProducts();
+    const unsubscribe = navigation.addListener("focus", () => fetchProducts());
     return unsubscribe;
   }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [page]);
+    fetchProducts();
+  }, [page, nameQuery, categoryQuery]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [nameQuery, categoryQuery]);
 
   return (
     <Container>
+      <ProductSearchBox handleSearch={handleNameSearch} />
+
+      {(nameQuery || categoryQuery) && (
+        <SButton style={{ marginBottom: 20 }} onPress={resetFilters}>
+          <Text style={{ color: "white" }}>Limpar filtros</Text>
+        </SButton>
+      )}
+
+      <CategoryFilterButtons
+        categories={productsData.categories}
+        handleSearch={setCategoryQuery}
+      />
+
       <Paginator
         currentPage={page}
         itemsPerPage={PRODUCTS_LIMIT}

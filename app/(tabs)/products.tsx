@@ -6,16 +6,26 @@ import { ProductCard } from "../../components/product-card";
 import { apiRequester } from "../../helpers/api-requester";
 import { IProduct } from "../../validation/productSchema";
 import { Container } from "../../components/container";
+import { Paginator } from "../../components/paginator";
+import { PaginatedResult } from "../../server/types/pagination";
+
+const PRODUCTS_LIMIT = 4;
 
 export default function ProductsPage() {
   const navigation = useNavigation();
-  const [products, setProducts] = useState<IProduct[]>([]);
-  const [page, setPage] = useState<number>(1);
 
-  const fetchData = async (pageNum: number) => {
+  const [page, setPage] = useState<number>(1);
+  const [productsData, setProductsData] = useState<PaginatedResult<IProduct>>({
+    total: 0,
+    items: [],
+  });
+
+  const fetchData = async () => {
     try {
-      const res = await apiRequester(`/product?page=${pageNum}`);
-      setProducts(res.data.items);
+      const res = await apiRequester<PaginatedResult<IProduct>>(
+        `/product?page=${page}&limit=${PRODUCTS_LIMIT}`
+      );
+      setProductsData(res.data);
     } catch (error) {
       Alert.alert("Ops!", "Não foi possível buscar os produtos!", [
         {
@@ -27,20 +37,26 @@ export default function ProductsPage() {
   };
 
   useEffect(() => {
-    fetchData(page);
-
-    const unsubscribe = navigation.addListener("focus", () => {
-      fetchData(page);
-    });
-
+    fetchData();
+    const unsubscribe = navigation.addListener("focus", fetchData);
     return unsubscribe;
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [page]);
+
   return (
     <Container>
-      <Text>{page}</Text>
+      <Paginator
+        currentPage={page}
+        itemsPerPage={PRODUCTS_LIMIT}
+        setPage={setPage}
+        total={productsData.total}
+      />
+
       <FlatList
-        data={products}
+        data={productsData.items}
         keyExtractor={(item, index) => String(index)}
         numColumns={2}
         renderItem={({ item }) => <ProductCard product={item} />}

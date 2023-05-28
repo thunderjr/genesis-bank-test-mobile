@@ -1,5 +1,9 @@
 import { createContext, useContext, useState } from "react";
+import { useRouter } from "expo-router";
+
+import { apiRequester } from "../helpers/api-requester";
 import { IProduct } from "../validation/productSchema";
+import { Alert } from "react-native";
 
 export type CartItem = {
   product: IProduct;
@@ -11,6 +15,7 @@ export type CartContextType = {
   addToCart: (product: IProduct, quantity: number) => void;
   removeFromCart: (product: IProduct) => void;
   clearCart: () => void;
+  submitCart: () => Promise<void>;
 };
 
 const CartContext = createContext<CartContextType>({
@@ -18,11 +23,14 @@ const CartContext = createContext<CartContextType>({
   addToCart: () => {},
   removeFromCart: () => {},
   clearCart: () => {},
+  submitCart: async () => {},
 });
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const router = useRouter();
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const addToCart = (product: IProduct, quantity: number) => {
@@ -54,9 +62,35 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
     setCartItems([]);
   };
 
+  const submitCart = async () => {
+    try {
+      const cartData = cartItems.map((item) => ({
+        productId: item.product._id,
+        amount: item.quantity,
+      }));
+
+      await apiRequester.post("/purchase", cartData);
+
+      clearCart();
+      Alert.alert("Sucesso!", "Compra realizada com sucesso", [
+        {
+          text: "Voltar",
+          onPress: router.back,
+        },
+      ]);
+    } catch (error) {
+      Alert.alert("Ops!", "Não foi possível finalizar a compra!", [
+        {
+          text: "Voltar",
+          onPress: router.back,
+        },
+      ]);
+    }
+  };
+
   return (
     <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart }}
+      value={{ cartItems, addToCart, removeFromCart, clearCart, submitCart }}
     >
       {children}
     </CartContext.Provider>

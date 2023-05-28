@@ -8,15 +8,22 @@ export const Container = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin-top: auto;
+  align-items: center;
 `;
 
 export const Title = styled.Text`
   flex: 1;
   text-align: center;
-  font-weight: bold;
   font-size: 20px;
 `;
 
-export const Text = styled.Text`
+export const FlexText = styled.Text`
+  flex: 1;
+`;
+
+export const BuyButtonText = styled.Text`
+  text-align: right;
+  font-weight: bold;
+  font-size: 18px;
   flex: 1;
 `;

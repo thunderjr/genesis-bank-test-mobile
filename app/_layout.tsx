@@ -3,6 +3,7 @@ import { SplashScreen, Stack } from "expo-router";
 export { ErrorBoundary } from "expo-router";
 import { useFonts } from "expo-font";
 import { useEffect } from "react";
+import { CartProvider } from "../context/cart-context";
 
 export const unstable_settings = {
   initialRouteName: "(tabs)",
@@ -28,10 +29,12 @@ export default function RootLayout() {
 function RootLayoutNav() {
   return (
     <>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="cart" options={{ presentation: "modal" }} />
-      </Stack>
+      <CartProvider>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="cart" options={{ presentation: "modal" }} />
+        </Stack>
+      </CartProvider>
     </>
   );
 }

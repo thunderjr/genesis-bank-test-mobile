@@ -1,7 +1,8 @@
 import { FontAwesome } from "@expo/vector-icons";
 import { useState } from "react";
 
-import { Container, SButton } from "./styles";
+import { Container } from "./styles";
+import { SButton } from "../button";
 import { SInput } from "../input";
 
 type Props = {

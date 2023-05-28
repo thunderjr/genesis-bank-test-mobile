@@ -10,7 +10,7 @@ import { Paginator } from "../../components/paginator";
 import { PaginatedResult } from "../../server/types/pagination";
 import { ProductSearchBox } from "../../components/search-box";
 import { CategoryFilterButtons } from "../../components/category-filter-buttons";
-import { SButton } from "../../components/search-box/styles";
+import { SButton } from "../../components/button";
 
 export type FilterProductsReturnType = PaginatedResult<IProduct> & {
   categories: string[];
@@ -76,9 +76,11 @@ export default function ProductsPage() {
       <ProductSearchBox handleSearch={handleNameSearch} />
 
       {(nameQuery || categoryQuery) && (
-        <SButton style={{ marginBottom: 20 }} onPress={resetFilters}>
-          <Text style={{ color: "white" }}>Limpar filtros</Text>
-        </SButton>
+        <SButton
+          style={{ marginBottom: 20 }}
+          onPress={resetFilters}
+          text="Limpar filtros"
+        />
       )}
 
       <CategoryFilterButtons

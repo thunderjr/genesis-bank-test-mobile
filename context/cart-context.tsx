@@ -26,24 +26,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const addToCart = (product: IProduct, quantity: number) => {
-    const existingItem = cartItems.find(
+    const existingItemIndex = cartItems.findIndex(
       (item) => item.product._id === product._id
     );
 
-    if (existingItem) {
-      const newQuantity = existingItem.quantity + quantity;
+    if (existingItemIndex !== -1) {
+      const updatedCartItems = [...cartItems];
+      updatedCartItems[existingItemIndex].quantity += quantity;
 
-      if (newQuantity > 0) {
-        setCartItems((prevItems) =>
-          prevItems.map((item) =>
-            item.product._id === product._id
-              ? { ...item, quantity: newQuantity }
-              : item
-          )
-        );
-      } else {
-        removeFromCart(product);
+      if (updatedCartItems[existingItemIndex].quantity <= 0) {
+        updatedCartItems.splice(existingItemIndex, 1);
       }
+
+      setCartItems(updatedCartItems);
     } else if (quantity > 0) {
       setCartItems((prevItems) => [...prevItems, { product, quantity }]);
     }

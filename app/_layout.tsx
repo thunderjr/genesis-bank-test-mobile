@@ -32,7 +32,10 @@ function RootLayoutNav() {
       <CartProvider>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="cart" options={{ presentation: "modal" }} />
+          <Stack.Screen
+            name="cart"
+            options={{ title: "Carrinho", presentation: "modal" }}
+          />
         </Stack>
       </CartProvider>
     </>

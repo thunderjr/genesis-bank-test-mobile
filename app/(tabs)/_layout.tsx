@@ -1,6 +1,7 @@
+import type { Icon } from "@expo/vector-icons/build/createIconSet";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import type { Icon } from "@expo/vector-icons/build/createIconSet";
+import { AntDesign } from "@expo/vector-icons";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
 
@@ -17,8 +18,8 @@ const CartIcon = () => (
   <Link href="/cart" asChild>
     <Pressable>
       {({ pressed }) => (
-        <FontAwesome
-          name="cart-plus"
+        <AntDesign
+          name="shoppingcart"
           size={30}
           style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
         />

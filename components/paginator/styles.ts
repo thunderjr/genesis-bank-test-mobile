@@ -1,16 +1,16 @@
 import styled from "styled-components/native";
 
 export const NumberCard = styled.TouchableOpacity<{ selected: boolean }>`
-  padding-horizontal: 15px;
+  padding-horizontal: 13px;
   padding-vertical: 5px;
-  background-color: rgb(75, 0, 130);
-  ${({ selected }) => selected && "background-color: rgba(75, 0, 130, 0.4);"}
+  background-color: rgb(65, 46, 191);
+  ${({ selected }) => selected && "background-color: rgba(65, 46, 191, 0.6);"}
   border-radius: 10px;
-  margin: 5px;
+  margin: 3px;
 `;
 
 export const NumberCardText = styled.Text`
-  font-size: 24px;
+  font-size: 22px;
   color: white;
 `;
 

@@ -16,22 +16,25 @@ export const Paginator = ({
   setPage,
   total,
 }: Props) => {
-  return (
-    <View>
-      <SText>Página</SText>
-      <CardsWrapper>
-        {Array(Math.ceil((total || itemsPerPage) / itemsPerPage))
-          .fill(null)
-          .map((_, i) => (
-            <NumberCard
-              selected={currentPage === i + 1}
-              onPress={() => setPage(i + 1)}
-              key={i}
-            >
-              <NumberCardText>{i + 1}</NumberCardText>
-            </NumberCard>
-          ))}
-      </CardsWrapper>
-    </View>
-  );
+  if (total)
+    return (
+      <View>
+        <SText>Página</SText>
+        <CardsWrapper>
+          {Array(Math.ceil((total || itemsPerPage) / itemsPerPage))
+            .fill(null)
+            .map((_, i) => (
+              <NumberCard
+                selected={currentPage === i + 1}
+                onPress={() => setPage(i + 1)}
+                key={i}
+              >
+                <NumberCardText>{i + 1}</NumberCardText>
+              </NumberCard>
+            ))}
+        </CardsWrapper>
+      </View>
+    );
+
+  return <></>;
 };

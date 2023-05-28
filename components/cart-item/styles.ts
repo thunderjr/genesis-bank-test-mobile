@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 
 export const SContainer = styled.View`
   padding: 20px;
+  margin-horizontal: 10px;
   border-bottom-color: #33333333;
   border-bottom-width: 1px;
   flex-direction: row;

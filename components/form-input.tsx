@@ -1,8 +1,7 @@
 import { Controller, type Control } from "react-hook-form";
 import { View, type TextStyle } from "react-native";
 import styled from "styled-components/native";
-
-import { STextInput } from "./styles";
+import { SInput } from "./input";
 
 type Props = {
   control: Control<any, Record<string, any>>;
@@ -36,7 +35,7 @@ export const Input = ({
       control={control}
       rules={rules}
       render={({ field: { onChange, onBlur, value } }) => (
-        <STextInput
+        <SInput
           placeholder={placeholder}
           placeholderTextColor={"#AAAAAAAA"}
           onBlur={onBlur}

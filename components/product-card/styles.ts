@@ -2,15 +2,15 @@ import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 
 export const SProductCard = styled.View`
+  width: ${Dimensions.get("window").width / 2 - 20}px;
+  background-color: rgba(100, 100, 100, 0.1);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   margin: 5px;
-  border-radius: 30px;
 `;
 
 export const ProductContainer = styled.View`
-  flex-direction: column;
   padding: 10px;
-  width: ${Dimensions.get("window").width / 2 - 20}px;
-  background-color: #ccc;
 `;
 
 export const ProductName = styled.Text`
@@ -21,10 +21,11 @@ export const ProductName = styled.Text`
 
 export const ProductDescription = styled.Text`
   margin-bottom: 10px;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 export const ProductPrice = styled.Text`
+  font-size: 14px;
   color: green;
   font-weight: bold;
 `;

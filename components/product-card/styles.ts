@@ -13,6 +13,13 @@ export const ProductContainer = styled.View`
   padding: 10px;
 `;
 
+export const QuantityBox = styled.View`
+  margin-left: auto;
+  height: 35px;
+  flex-direction: row;
+  gap: 5px;
+`;
+
 export const ProductName = styled.Text`
   font-weight: bold;
   font-size: 20px;
@@ -28,4 +35,5 @@ export const ProductPrice = styled.Text`
   font-size: 14px;
   color: green;
   font-weight: bold;
+  margin-bottom: 10px;
 `;

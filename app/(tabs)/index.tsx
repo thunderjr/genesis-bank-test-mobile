@@ -1,9 +1,11 @@
 import { Text, View } from "react-native";
 
+import { Container } from "../../components/container";
+
 export default function HomePage() {
   return (
-    <View style={{ alignItems: "center", marginVertical: 15 }}>
+    <Container>
       <Text>HOME</Text>
-    </View>
+    </Container>
   );
 }
